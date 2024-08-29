@@ -13,6 +13,7 @@ import (
 	"github.com/Layr-Labs/eigensdk-go/chainio/clients/eth"
 	"github.com/Layr-Labs/eigensdk-go/logging"
 	sdktypes "github.com/Layr-Labs/eigensdk-go/types"
+	gethrpc "github.com/ethereum/go-ethereum/rpc"
 
 	"github.com/alt-research/avs-generic-aggregator/core/config"
 	"github.com/alt-research/avs-generic-aggregator/core/types"
@@ -28,6 +29,7 @@ type ProxyHashRpcServer struct {
 	chainIds              map[string]uint32
 	workProofsBlockNumMod map[string]uint32
 	defaultAVSName        string
+	genericOperatorAddr   string
 	logger                logging.Logger
 	// We use this rpc server as the handler for jsonrpc
 	// to make sure same as legacy operator 's api
@@ -79,6 +81,7 @@ func NewAlertProxyRpcServer(
 		avsCfgs:               avsCfgsMap,
 		chainIds:              chainIds,
 		workProofsBlockNumMod: workProofsBlockNumMod,
+		genericOperatorAddr:   genericOperatorAddr,
 	}
 
 	// not need do this because we not need use this server impl
@@ -343,4 +346,36 @@ func (s *ProxyHashRpcServer) commitWorkProof(ctx context.Context, avsName string
 	}
 
 	return nil
+}
+
+type OperatorStatusAVSStatus struct {
+	AVSName            string `json:"avs_name"`
+	AVSContractAddress string `json:"avs_contract_address"`
+	OperatorId         string `json:"operator_id"`
+	OperatorAddress    string `json:"operator_address"`
+}
+
+type OperatorStatusResponse struct {
+	NodeName string                    `json:"node_name"`
+	Version  string                    `json:"version"`
+	Avs      []OperatorStatusAVSStatus `json:"avs"`
+}
+
+func (s *ProxyHashRpcServer) OperatorStatus(ctx context.Context) (OperatorStatusResponse, error) {
+	s.logger.Debug("OperatorStatus")
+
+	res := OperatorStatusResponse{}
+
+	client, err := gethrpc.DialContext(ctx, s.genericOperatorAddr)
+	if err != nil {
+		return res, errors.Wrapf(err, "dial OperatorStatus connection failed")
+	}
+
+	err = client.CallContext(
+		ctx, &res, "operator_operatorStatus")
+	if err != nil {
+		return res, errors.Wrapf(err, "call OperatorStatus failed")
+	}
+
+	return res, nil
 }
