@@ -399,7 +399,7 @@ func (s *ProxyHashRpcServer) OperatorStatus(ctx context.Context) (OperatorStatus
 	}
 
 	err = client.CallContext(
-		ctx, &res, "operator_operatorStatus")
+		ctx, &res, "operator_operatorStatus", []interface{}{})
 	if err != nil {
 		return res, errors.Wrapf(err, "call OperatorStatus failed")
 	}
