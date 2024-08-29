@@ -133,6 +133,31 @@ func (s *ProxyHashRpcServer) handerConfigReq(
 	operator.WriteJSON(s.logger, w, rpcRequest.ID, json.RawMessage(cfg))
 }
 
+func (s *ProxyHashRpcServer) handerOperatorStatusReq(
+	ctx context.Context,
+	w http.ResponseWriter,
+	rpcRequest jsonrpc2.Request) {
+
+	resp, err := s.OperatorStatus(ctx)
+
+	if err != nil {
+		operator.WriteErrorJSON(
+			s.logger, w, rpcRequest.ID, http.StatusBadRequest, 3,
+			err)
+		return
+	}
+
+	raw, err := json.Marshal(resp)
+	if err != nil {
+		operator.WriteErrorJSON(
+			s.logger, w, rpcRequest.ID, http.StatusBadRequest, 3,
+			err)
+		return
+	}
+
+	operator.WriteJSON(s.logger, w, rpcRequest.ID, json.RawMessage(raw))
+}
+
 func (s *ProxyHashRpcServer) HttpRPCHandler(w http.ResponseWriter, r *http.Request) {
 	rpcRequest := jsonrpc2.Request{}
 	err := json.NewDecoder(r.Body).Decode(&rpcRequest)
@@ -151,6 +176,8 @@ func (s *ProxyHashRpcServer) HttpRPCHandler(w http.ResponseWriter, r *http.Reque
 
 	if rpcRequest.Method == "operator_getConfig" {
 		s.handerConfigReq(w, rpcRequest)
+	} else if rpcRequest.Method == "operator_operatorStatus" {
+		s.handerOperatorStatusReq(r.Context(), w, rpcRequest)
 	} else {
 		s.rpcServer.HttpRPCHandlerRequest(w, rpcRequest)
 	}
