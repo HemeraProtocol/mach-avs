@@ -11,9 +11,9 @@ import (
 	"github.com/Layr-Labs/eigensdk-go/chainio/txmgr"
 	logging "github.com/Layr-Labs/eigensdk-go/logging"
 
-	csservicemanager "github.com/alt-research/avs/contracts/bindings/MachServiceManager"
-	"github.com/alt-research/avs/legacy/core/config"
-	"github.com/alt-research/avs/legacy/core/message"
+	csservicemanager "github.com/HemeraProtocol/avs/contracts/bindings/MachServiceManager"
+	"github.com/HemeraProtocol/avs/legacy/core/config"
+	"github.com/HemeraProtocol/avs/legacy/core/message"
 )
 
 type AvsWriterer interface {
@@ -71,7 +71,8 @@ func (w *AvsWriter) SendConfirmAlert(ctx context.Context,
 		w.logger.Errorf("Error getting tx opts")
 		return nil, err
 	}
-	tx, err := w.AvsContractBindings.ServiceManager.ConfirmAlert(txOpts, alertHeader.ToIMachServiceManagerAlertHeader(), nonSignerStakesAndSignature)
+	reqId, _ := alertHeader.SignHash()
+	tx, err := w.AvsContractBindings.ServiceManager.VerifyRequest(txOpts, reqId, alertHeader.QuorumNumbers.UnderlyingType(), uint32(alertHeader.ReferenceBlockNumber), nonSignerStakesAndSignature)
 	if err != nil {
 		w.logger.Error("Error submitting SubmitTaskResponse tx while calling respondToTask", "err", err)
 		return nil, err

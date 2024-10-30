@@ -941,6 +941,10 @@ func (_ContractMachServiceManager *ContractMachServiceManagerTransactor) Confirm
 	return _ContractMachServiceManager.contract.Transact(opts, "confirmAlert", alertHeader, nonSignerStakesAndSignature)
 }
 
+func (_ContractMachServiceManager *ContractMachServiceManagerTransactor) VerifyRequest(opts *bind.TransactOpts, reqId [32]byte, quorumNumbers []byte, referenceBlockNumber uint32, nonSignerStakesAndSignature IBLSSignatureCheckerNonSignerStakesAndSignature) (*types.Transaction, error) {
+	return _ContractMachServiceManager.contract.Transact(opts, "verifyRequest", reqId, quorumNumbers, referenceBlockNumber, nonSignerStakesAndSignature)
+}
+
 // ConfirmAlert is a paid mutator transaction binding the contract method 0x008f38e7.
 //
 // Solidity: function confirmAlert((bytes32,bytes,bytes,uint32) alertHeader, (uint32[],(uint256,uint256)[],(uint256,uint256)[],(uint256[2],uint256[2]),(uint256,uint256),uint32[],uint32[],uint32[][]) nonSignerStakesAndSignature) returns()
