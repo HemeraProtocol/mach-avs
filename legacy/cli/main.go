@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/alt-research/avs/legacy/cli/actions"
-	"github.com/alt-research/avs/legacy/core/config"
+	"github.com/HemeraProtocol/avs/legacy/cli/actions"
+	"github.com/HemeraProtocol/avs/legacy/core/config"
 	"github.com/urfave/cli"
 )
 

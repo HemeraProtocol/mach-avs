@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/alt-research/avs/api/grpc/aggregator";
+option go_package = "github.com/HemeraProtocol/avs/api/grpc/aggregator";
 package aggregator;
 
 // The Aggregator is for collection the bls signatures from operator and

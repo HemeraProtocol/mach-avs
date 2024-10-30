@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"log/slog"
 
+	"github.com/HemeraProtocol/avs/legacy/aggregator/types"
+	"github.com/HemeraProtocol/avs/legacy/api/grpc/aggregator"
+	"github.com/HemeraProtocol/avs/legacy/core"
 	"github.com/Layr-Labs/eigensdk-go/crypto/bls"
 	sdktypes "github.com/Layr-Labs/eigensdk-go/types"
-	"github.com/alt-research/avs/legacy/aggregator/types"
-	"github.com/alt-research/avs/legacy/api/grpc/aggregator"
-	"github.com/alt-research/avs/legacy/core"
 
-	csservicemanager "github.com/alt-research/avs/contracts/bindings/MachServiceManager"
+	csservicemanager "github.com/HemeraProtocol/avs/contracts/bindings/MachServiceManager"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"golang.org/x/crypto/sha3"

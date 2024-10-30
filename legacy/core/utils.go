@@ -3,9 +3,9 @@ package core
 import (
 	"math/big"
 
+	csservicemanager "github.com/HemeraProtocol/avs/contracts/bindings/MachServiceManager"
 	"github.com/Layr-Labs/eigensdk-go/crypto/bls"
 	sdktypes "github.com/Layr-Labs/eigensdk-go/types"
-	csservicemanager "github.com/alt-research/avs/contracts/bindings/MachServiceManager"
 )
 
 // BINDING UTILS - conversion from contract structs to golang structs

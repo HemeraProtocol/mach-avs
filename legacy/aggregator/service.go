@@ -14,11 +14,12 @@ import (
 	blsagg "github.com/Layr-Labs/eigensdk-go/services/bls_aggregation"
 	"github.com/Layr-Labs/eigensdk-go/services/operatorsinfo"
 
-	"github.com/alt-research/avs/legacy/aggregator/rpc"
-	"github.com/alt-research/avs/legacy/aggregator/types"
-	"github.com/alt-research/avs/legacy/core/chainio"
-	"github.com/alt-research/avs/legacy/core/config"
-	"github.com/alt-research/avs/legacy/core/message"
+	"github.com/HemeraProtocol/avs/legacy/aggregator/rpc"
+	"github.com/HemeraProtocol/avs/legacy/aggregator/types"
+	"github.com/HemeraProtocol/avs/legacy/core/chainio"
+	"github.com/HemeraProtocol/avs/legacy/core/config"
+	"github.com/HemeraProtocol/avs/legacy/core/message"
+	sdktypes "github.com/Layr-Labs/eigensdk-go/types"
 	"github.com/ethereum/go-ethereum/common"
 )
 
@@ -273,11 +274,8 @@ func (agg *AggregatorService) sendNewTask(alertHash message.Bytes32, taskIndex t
 	// just use config value
 	quorumNumbers = agg.cfg.QuorumNums
 
-	quorumThresholdPercentages, err := agg.avsReader.GetQuorumThresholdPercentages(context.Background(), uint32(referenceBlockNumber), quorumNumbers)
-	if err != nil {
-		agg.logger.Error("GetQuorumThresholdPercentages failed", "err", err)
-		return nil, err
-	}
+	// hardcoded in the contract
+	quorumThresholdPercentages := sdktypes.QuorumThresholdPercentages{66}
 
 	agg.logger.Info(
 		"quorum datas",

@@ -1,3 +1,3 @@
 package operator
 
-//go:generate mockgen -destination=./mocks/rpc_client.go -package=mocks github.com/alt-research/avs/legacy/operator AggregatorRpcClienter
+//go:generate mockgen -destination=./mocks/rpc_client.go -package=mocks github.com/HemeraProtocol/avs/legacy/operator AggregatorRpcClienter

@@ -1,4 +1,4 @@
-module github.com/alt-research/avs
+module github.com/HemeraProtocol/avs
 
 go 1.21
 

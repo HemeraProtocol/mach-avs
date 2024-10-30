@@ -9,7 +9,7 @@ import (
 
 	"github.com/Layr-Labs/eigensdk-go/logging"
 
-	"github.com/alt-research/avs/legacy/core/message"
+	"github.com/HemeraProtocol/avs/legacy/core/message"
 )
 
 type LegacyRpcHandler struct {

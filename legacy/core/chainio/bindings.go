@@ -7,8 +7,8 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	gethcommon "github.com/ethereum/go-ethereum/common"
 
+	csservicemanager "github.com/HemeraProtocol/avs/contracts/bindings/MachServiceManager"
 	regcoord "github.com/Layr-Labs/eigensdk-go/contracts/bindings/RegistryCoordinator"
-	csservicemanager "github.com/alt-research/avs/contracts/bindings/MachServiceManager"
 )
 
 type AvsManagersBindings struct {

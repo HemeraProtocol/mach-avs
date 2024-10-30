@@ -1,7 +1,7 @@
 package rpc
 
 import (
-	"github.com/alt-research/avs/legacy/core/message"
+	"github.com/HemeraProtocol/avs/legacy/core/message"
 )
 
 type AggregatorRpcHandler interface {

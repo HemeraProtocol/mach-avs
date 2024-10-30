@@ -8,8 +8,8 @@ import (
 	"github.com/Layr-Labs/eigensdk-go/chainio/clients/eth"
 	sdklogging "github.com/Layr-Labs/eigensdk-go/logging"
 
-	csservicemanager "github.com/alt-research/avs/contracts/bindings/MachServiceManager"
-	"github.com/alt-research/avs/legacy/core/config"
+	csservicemanager "github.com/HemeraProtocol/avs/contracts/bindings/MachServiceManager"
+	"github.com/HemeraProtocol/avs/legacy/core/config"
 )
 
 type AvsSubscriberer interface {

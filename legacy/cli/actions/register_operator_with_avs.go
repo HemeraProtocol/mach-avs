@@ -7,10 +7,10 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/HemeraProtocol/avs/legacy/core/config"
+	"github.com/HemeraProtocol/avs/legacy/operator"
 	sdkecdsa "github.com/Layr-Labs/eigensdk-go/crypto/ecdsa"
 	sdkutils "github.com/Layr-Labs/eigensdk-go/utils"
-	"github.com/alt-research/avs/legacy/core/config"
-	"github.com/alt-research/avs/legacy/operator"
 	"github.com/pkg/errors"
 	"github.com/urfave/cli"
 )

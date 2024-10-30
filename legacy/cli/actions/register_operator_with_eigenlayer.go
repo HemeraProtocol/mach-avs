@@ -6,9 +6,9 @@ import (
 
 	"github.com/urfave/cli"
 
+	"github.com/HemeraProtocol/avs/legacy/core/config"
+	"github.com/HemeraProtocol/avs/legacy/operator"
 	sdkutils "github.com/Layr-Labs/eigensdk-go/utils"
-	"github.com/alt-research/avs/legacy/core/config"
-	"github.com/alt-research/avs/legacy/operator"
 )
 
 func RegisterOperatorWithEigenlayer(ctx *cli.Context) error {

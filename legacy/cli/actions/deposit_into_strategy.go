@@ -6,9 +6,9 @@ import (
 	"log"
 	"math/big"
 
+	"github.com/HemeraProtocol/avs/legacy/core/config"
+	"github.com/HemeraProtocol/avs/legacy/operator"
 	sdkutils "github.com/Layr-Labs/eigensdk-go/utils"
-	"github.com/alt-research/avs/legacy/core/config"
-	"github.com/alt-research/avs/legacy/operator"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/urfave/cli"
 )

@@ -20,7 +20,7 @@ import (
 	"github.com/Layr-Labs/eigensdk-go/types"
 	sdkutils "github.com/Layr-Labs/eigensdk-go/utils"
 
-	"github.com/alt-research/avs/legacy/core"
+	"github.com/HemeraProtocol/avs/legacy/core"
 )
 
 // Config contains all of the configuration information for a mach aggregators and challengers.

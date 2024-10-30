@@ -12,8 +12,8 @@ import (
 
 	"github.com/urfave/cli"
 
-	"github.com/alt-research/avs/legacy/aggregator"
-	"github.com/alt-research/avs/legacy/core/config"
+	"github.com/HemeraProtocol/avs/legacy/aggregator"
+	"github.com/HemeraProtocol/avs/legacy/core/config"
 )
 
 var (

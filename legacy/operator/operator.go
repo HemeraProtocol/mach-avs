@@ -15,12 +15,12 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/alt-research/avs/legacy/core"
-	"github.com/alt-research/avs/legacy/core/alert"
-	"github.com/alt-research/avs/legacy/core/chainio"
-	"github.com/alt-research/avs/legacy/core/config"
-	"github.com/alt-research/avs/legacy/core/message"
-	"github.com/alt-research/avs/legacy/metrics"
+	"github.com/HemeraProtocol/avs/legacy/core"
+	"github.com/HemeraProtocol/avs/legacy/core/alert"
+	"github.com/HemeraProtocol/avs/legacy/core/chainio"
+	"github.com/HemeraProtocol/avs/legacy/core/config"
+	"github.com/HemeraProtocol/avs/legacy/core/message"
+	"github.com/HemeraProtocol/avs/legacy/metrics"
 
 	"github.com/Layr-Labs/eigensdk-go/chainio/clients"
 	sdkelcontracts "github.com/Layr-Labs/eigensdk-go/chainio/clients/elcontracts"

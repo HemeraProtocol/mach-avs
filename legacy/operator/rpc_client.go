@@ -6,10 +6,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/alt-research/avs/legacy/core/alert"
-	"github.com/alt-research/avs/legacy/core/config"
-	"github.com/alt-research/avs/legacy/core/message"
-	"github.com/alt-research/avs/legacy/metrics"
+	"github.com/HemeraProtocol/avs/legacy/core/alert"
+	"github.com/HemeraProtocol/avs/legacy/core/config"
+	"github.com/HemeraProtocol/avs/legacy/core/message"
+	"github.com/HemeraProtocol/avs/legacy/metrics"
 	"github.com/ethereum/go-ethereum/common"
 
 	"github.com/Layr-Labs/eigensdk-go/logging"

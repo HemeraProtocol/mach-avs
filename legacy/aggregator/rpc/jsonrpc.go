@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"sync"
 
+	"github.com/HemeraProtocol/avs/legacy/api/grpc/aggregator"
+	"github.com/HemeraProtocol/avs/legacy/core/message"
 	"github.com/Layr-Labs/eigensdk-go/logging"
-	"github.com/alt-research/avs/legacy/api/grpc/aggregator"
-	"github.com/alt-research/avs/legacy/core/message"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/node"
 	gethrpc "github.com/ethereum/go-ethereum/rpc"

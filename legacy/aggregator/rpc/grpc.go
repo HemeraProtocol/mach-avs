@@ -6,9 +6,9 @@ import (
 	"net"
 	"sync"
 
+	"github.com/HemeraProtocol/avs/legacy/api/grpc/aggregator"
+	"github.com/HemeraProtocol/avs/legacy/core/message"
 	"github.com/Layr-Labs/eigensdk-go/logging"
-	"github.com/alt-research/avs/legacy/api/grpc/aggregator"
-	"github.com/alt-research/avs/legacy/core/message"
 	"google.golang.org/grpc"
 )
 

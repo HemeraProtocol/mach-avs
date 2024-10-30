@@ -12,13 +12,13 @@ import (
 	blsagg "github.com/Layr-Labs/eigensdk-go/services/bls_aggregation"
 	sdktypes "github.com/Layr-Labs/eigensdk-go/types"
 
-	"github.com/alt-research/avs/legacy/aggregator/rpc"
-	"github.com/alt-research/avs/legacy/core"
-	"github.com/alt-research/avs/legacy/core/chainio"
-	"github.com/alt-research/avs/legacy/core/config"
-	"github.com/alt-research/avs/legacy/core/message"
+	"github.com/HemeraProtocol/avs/legacy/aggregator/rpc"
+	"github.com/HemeraProtocol/avs/legacy/core"
+	"github.com/HemeraProtocol/avs/legacy/core/chainio"
+	"github.com/HemeraProtocol/avs/legacy/core/config"
+	"github.com/HemeraProtocol/avs/legacy/core/message"
 
-	csservicemanager "github.com/alt-research/avs/contracts/bindings/MachServiceManager"
+	csservicemanager "github.com/HemeraProtocol/avs/contracts/bindings/MachServiceManager"
 )
 
 const (
