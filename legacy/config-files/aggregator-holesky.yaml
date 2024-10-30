@@ -1,0 +1,26 @@
+# 'production' only prints info and above. 'development' also prints debug
+environment: development
+eth_rpc_url: https://holesky.drpc.org
+eth_ws_url: wss://holesky.drpc.org
+
+# address which the aggregator listens on for operator signed messages
+aggregator_server_ip_port_address: localhost:8090
+
+# address which the aggregator grpc listens on for operator signed messages
+aggregator_grpc_server_ip_port_address: localhost:8190
+
+# address which the aggregator json rpc listens on for operator signed messages
+aggregator_jsonrpc_server_ip_port_address: localhost:8290
+
+rpc_vhosts: ["*", "localhost"]
+rpc_cors: ["*", "localhost"]
+
+# the layer1 chain id the avs contracts in
+layer1_chain_id: 17000
+
+# the layer2 chain id
+layer2_chain_id: 0
+
+# the QuorumNums we use, just no change
+quorum_nums: [0]
+
