@@ -6,11 +6,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/pkg/errors"
-	"github.com/urfave/cli"
-
 	"github.com/Layr-Labs/eigensdk-go/chainio/clients/eth"
 	"github.com/Layr-Labs/eigensdk-go/chainio/clients/wallet"
 	"github.com/Layr-Labs/eigensdk-go/chainio/txmgr"
@@ -19,8 +14,13 @@ import (
 	"github.com/Layr-Labs/eigensdk-go/signerv2"
 	"github.com/Layr-Labs/eigensdk-go/types"
 	sdkutils "github.com/Layr-Labs/eigensdk-go/utils"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/pkg/errors"
+	"github.com/urfave/cli"
 
 	"github.com/HemeraProtocol/avs/legacy/core"
+	_ "github.com/lib/pq"
 )
 
 // Config contains all of the configuration information for a mach aggregators and challengers.
@@ -50,6 +50,7 @@ type Config struct {
 	PrivateKey        *ecdsa.PrivateKey `json:"-"`
 	TxMgr             txmgr.TxManager
 	AggregatorAddress common.Address
+	DBConfig          string
 }
 
 // These are read from ConfigFileFlag
@@ -65,6 +66,14 @@ type ConfigRaw struct {
 	QuorumNums                        []uint8             `yaml:"quorum_nums"`
 	RpcVhosts                         []string            `yaml:"rpc_vhosts"`
 	RpcCors                           []string            `yaml:"rpc_cors"`
+	Postgres                          struct {
+		Host     string `yaml:"host"`
+		Port     int    `yaml:"port"`
+		User     string `yaml:"user"`
+		Password string `yaml:"password"`
+		DBName   string `yaml:"dbname"`
+		SSLMode  string `yaml:"sslmode"`
+	} `yaml:"postgres"`
 }
 
 // These are read from DeploymentFileFlag
@@ -211,6 +220,15 @@ func NewConfig(ctx *cli.Context) (*Config, error) {
 		"raw", fmt.Sprintf("%#v", configRaw.QuorumNums),
 	)
 
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
+		configRaw.Postgres.Host,
+		configRaw.Postgres.Port,
+		configRaw.Postgres.User,
+		configRaw.Postgres.Password,
+		configRaw.Postgres.DBName,
+		configRaw.Postgres.SSLMode,
+	)
+
 	config := &Config{
 		Logger:                            logger,
 		EthWsRpcUrl:                       configRaw.EthWsUrl,
@@ -231,6 +249,7 @@ func NewConfig(ctx *cli.Context) (*Config, error) {
 		QuorumNums:                        quorumNums,
 		RpcVhosts:                         configRaw.RpcVhosts,
 		RpcCors:                           configRaw.RpcCors,
+		DBConfig:                          psqlInfo,
 	}
 	config.validate()
 	return config, nil

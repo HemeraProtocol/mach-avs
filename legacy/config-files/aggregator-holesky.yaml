@@ -24,3 +24,10 @@ layer2_chain_id: 0
 # the QuorumNums we use, just no change
 quorum_nums: [0]
 
+postgres:
+  host: localhost
+  port: 5432
+  user: postgres
+  password: 123456
+  dbname: test
+  sslmode: disable

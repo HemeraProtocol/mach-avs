@@ -7,6 +7,9 @@ import (
 	"sync"
 	"time"
 
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+
 	sdkclients "github.com/Layr-Labs/eigensdk-go/chainio/clients"
 	"github.com/Layr-Labs/eigensdk-go/chainio/clients/eth"
 	"github.com/Layr-Labs/eigensdk-go/logging"
@@ -14,6 +17,7 @@ import (
 	blsagg "github.com/Layr-Labs/eigensdk-go/services/bls_aggregation"
 	"github.com/Layr-Labs/eigensdk-go/services/operatorsinfo"
 
+	"github.com/HemeraProtocol/avs/legacy/aggregator/models"
 	"github.com/HemeraProtocol/avs/legacy/aggregator/rpc"
 	"github.com/HemeraProtocol/avs/legacy/aggregator/types"
 	"github.com/HemeraProtocol/avs/legacy/core/chainio"
@@ -39,6 +43,7 @@ type AggregatorService struct {
 	nextTaskIndexMu       sync.RWMutex
 	operatorStatus        map[common.Address]*OperatorStatus
 	operatorStatusMu      sync.RWMutex
+	model                 *models.Model
 }
 
 // NewAggregator creates a new Aggregator with the provided config.
@@ -67,6 +72,11 @@ func NewAggregatorService(c *config.Config) (*AggregatorService, error) {
 	avsRegistryService := avsregistry.NewAvsRegistryServiceChainCaller(avsReader, operatorsinfoService, c.Logger)
 	blsAggregationService := blsagg.NewBlsAggregatorService(avsRegistryService, c.Logger)
 
+	db, err := gorm.Open(postgres.Open(c.DBConfig), &gorm.Config{})
+	if err != nil {
+		return nil, err
+	}
+
 	return &AggregatorService{
 		logger:                c.Logger,
 		avsReader:             avsReader,
@@ -76,6 +86,7 @@ func NewAggregatorService(c *config.Config) (*AggregatorService, error) {
 		finishedTasks:         make(map[[32]byte]*FinishedTaskStatus),
 		operatorStatus:        make(map[common.Address]*OperatorStatus),
 		cfg:                   c,
+		model:                 models.NewModel(db),
 	}, nil
 }
 
@@ -198,6 +209,16 @@ func (agg *AggregatorService) CreateTask(req *message.CreateTaskRequest) (*messa
 		agg.logger.Info("the task had created", "task", task)
 	}
 
+	modelTask := &models.Task{
+		AlertHash:            task.AlertHash[:],
+		QuorumNumbers:        task.QuorumNumbers.UnderlyingType(),
+		TaskIndex:            task.TaskIndex,
+		ReferenceBlockNumber: task.ReferenceBlockNumber,
+	}
+	if err := agg.model.CreateTask(modelTask); err != nil {
+		agg.logger.Error("create task failed", "err", err, "task", modelTask)
+	}
+
 	return &message.CreateTaskResponse{Info: *task}, nil
 }
 
@@ -222,14 +243,24 @@ func (agg *AggregatorService) ProcessSignedTaskResponse(signedTaskResponse *mess
 		return nil, fmt.Errorf("task not found")
 	}
 
+	modelTaskSignature := &models.TaskSignature{
+		AlertHash:  signedTaskResponse.Alert.AlertHash[:],
+		OperatorId: signedTaskResponse.OperatorId[:],
+		SignResult: true,
+	}
+
 	agg.logger.Infof("ProcessNewSignature: %#v", signedTaskResponse.Alert.TaskIndex)
 	err = agg.blsAggregationService.ProcessNewSignature(
 		context.Background(), taskIndex, taskResponseDigest,
 		&signedTaskResponse.BlsSignature, signedTaskResponse.OperatorId,
 	)
-
 	if err != nil {
 		agg.logger.Error("ProcessNewSignature error", "err", err)
+		modelTaskSignature.SignResult = false
+	}
+
+	if err := agg.model.CreateTaskSignature(modelTaskSignature); err != nil {
+		agg.logger.Error("create task signature failed", "err", err, "taskSignature", modelTaskSignature)
 	}
 
 	return &message.SignedTaskRespResponse{}, err

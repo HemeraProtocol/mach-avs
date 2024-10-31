@@ -12,6 +12,7 @@ import (
 	blsagg "github.com/Layr-Labs/eigensdk-go/services/bls_aggregation"
 	sdktypes "github.com/Layr-Labs/eigensdk-go/types"
 
+	"github.com/HemeraProtocol/avs/legacy/aggregator/models"
 	"github.com/HemeraProtocol/avs/legacy/aggregator/rpc"
 	"github.com/HemeraProtocol/avs/legacy/core"
 	"github.com/HemeraProtocol/avs/legacy/core/chainio"
@@ -185,12 +186,12 @@ func (agg *Aggregator) wait() {
 	agg.logger.Info("The aggregator is exited")
 }
 
-func (agg *Aggregator) sendAggregatedResponseToContract(blsAggServiceResp blsagg.BlsAggregationServiceResponse) {
+func (agg *Aggregator) sendAggregatedResponseToContract(blsAggServiceResp blsagg.BlsAggregationServiceResponse) error {
 	// TODO: check if blsAggServiceResp contains an err
 	if blsAggServiceResp.Err != nil {
 		agg.logger.Error("BlsAggregationServiceResponse contains an error", "err", blsAggServiceResp.Err)
 		// panicing to help with debugging (fail fast), but we shouldn't panic if we run this in production
-		panic(blsAggServiceResp.Err)
+		return blsAggServiceResp.Err
 	}
 	nonSignerPubkeys := []csservicemanager.BN254G1Point{}
 	for _, nonSignerPubkey := range blsAggServiceResp.NonSignersPubkeysG1 {
@@ -220,17 +221,27 @@ func (agg *Aggregator) sendAggregatedResponseToContract(blsAggServiceResp blsagg
 	res, err := agg.avsWriter.SendConfirmAlert(context.Background(), task, nonSignerStakesAndSignature)
 	if err != nil {
 		agg.logger.Error("Aggregator failed to respond to task", "err", err)
+		return err
 	}
 
-	if res != nil {
-		agg.service.SetFinishedTask(task.AlertHash, &FinishedTaskStatus{
-			Message:          task,
-			TxHash:           res.TxHash,
-			BlockHash:        res.BlockHash,
-			BlockNumber:      res.BlockNumber,
-			TransactionIndex: res.TransactionIndex,
-		})
-	} else {
-		agg.logger.Error("the send confirm alert res is failed by nil return", "hash", task.AlertHash)
+	agg.service.SetFinishedTask(task.AlertHash, &FinishedTaskStatus{
+		Message:          task,
+		TxHash:           res.TxHash,
+		BlockHash:        res.BlockHash,
+		BlockNumber:      res.BlockNumber,
+		TransactionIndex: res.TransactionIndex,
+	})
+
+	modelTask := &models.Task{
+		AlertHash:        task.AlertHash[:],
+		TxHash:           res.TxHash.String(),
+		BlockHash:        res.BlockHash.String(),
+		BlockNumber:      res.BlockNumber.Uint64(),
+		TransactionIndex: res.TransactionIndex,
 	}
+	if err := agg.service.model.SetTaskFinished(modelTask); err != nil {
+		agg.logger.Error("create task failed", "err", err, "task", modelTask)
+	}
+
+	return nil
 }
