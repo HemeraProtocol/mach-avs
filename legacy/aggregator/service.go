@@ -209,7 +209,7 @@ func (agg *AggregatorService) CreateTask(req *message.CreateTaskRequest) (*messa
 		agg.logger.Info("the task had created", "task", task)
 	}
 
-	modelTask := &models.Task{
+	modelTask := &models.AggregatorTask{
 		AlertHash:            task.AlertHash[:],
 		QuorumNumbers:        task.QuorumNumbers.UnderlyingType(),
 		TaskIndex:            task.TaskIndex,
@@ -243,7 +243,7 @@ func (agg *AggregatorService) ProcessSignedTaskResponse(signedTaskResponse *mess
 		return nil, fmt.Errorf("task not found")
 	}
 
-	modelTaskSignature := &models.TaskSignature{
+	modelTaskSignature := &models.AggregatorTaskSignature{
 		AlertHash:  signedTaskResponse.Alert.AlertHash[:],
 		OperatorId: signedTaskResponse.OperatorId[:],
 		SignResult: true,

@@ -232,7 +232,7 @@ func (agg *Aggregator) sendAggregatedResponseToContract(blsAggServiceResp blsagg
 		TransactionIndex: res.TransactionIndex,
 	})
 
-	modelTask := &models.Task{
+	modelTask := &models.AggregatorTask{
 		AlertHash:        task.AlertHash[:],
 		TxHash:           res.TxHash.String(),
 		BlockHash:        res.BlockHash.String(),
