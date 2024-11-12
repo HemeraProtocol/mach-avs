@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type Task struct {
+type AggregatorTask struct {
 	gorm.Model
 	ID                   uint    `gorm:"primary_key"`
 	AlertHash            []byte  `gorm:"column:alert_hash;unique"`
@@ -21,7 +21,7 @@ type Task struct {
 	UpdatedAt            time.Time
 }
 
-type TaskSignature struct {
+type AggregatorTaskSignature struct {
 	gorm.Model
 	ID         uint   `gorm:"primary_key"`
 	AlertHash  []byte `gorm:"column:alert_hash"`
