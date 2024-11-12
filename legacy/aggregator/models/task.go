@@ -24,8 +24,8 @@ type Task struct {
 type TaskSignature struct {
 	gorm.Model
 	ID         uint   `gorm:"primary_key"`
-	AlertHash  []byte `gorm:"column:alert_hash;unique"`
-	OperatorId []byte `gorm:"column:operator_id;unique"`
+	AlertHash  []byte `gorm:"column:alert_hash"`
+	OperatorId []byte `gorm:"column:operator_id"`
 	SignResult bool   `gorm:"column:sign_result"`
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
